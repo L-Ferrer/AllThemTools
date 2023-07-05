@@ -1,12 +1,12 @@
 import { Stack } from "expo-router";
 import React from "react";
 
-export default function HomeLayout() {
+export default function IndexLayout() {
   return (
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: "blue",
+          backgroundColor: "#545454",
         },
         headerTintColor: "white",
         headerTitleStyle: {
@@ -15,9 +15,9 @@ export default function HomeLayout() {
       }}
     >
       <Stack.Screen
-        name="(tabs)"
+        name="index"
         options={{
-          title: "Welcome",
+          title: "Index",
         }}
       />
     </Stack>
