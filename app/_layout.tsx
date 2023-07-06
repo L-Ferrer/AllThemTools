@@ -6,7 +6,7 @@ export default function Layout() {
     <Drawer>
       <Drawer.Screen name="index" 
         options={{
-          title: "All Them Tools",
+          title: "Home",
           headerStyle: {
             backgroundColor: '#000',
           },
@@ -14,10 +14,40 @@ export default function Layout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          drawerStyle: {
+            backgroundColor: '#000',
+          },
+          drawerInactiveTintColor: '#fff',
         }} />
       <Drawer.Screen name="tool/notes/index" 
         options={{
           title: "Notes",
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          drawerStyle: {
+            backgroundColor: '#000',
+          },
+          drawerInactiveTintColor: '#fff',
+        }} />
+        <Drawer.Screen name="tool/compass/index" 
+        options={{
+          title: "Compass",
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          drawerStyle: {
+            backgroundColor: '#000',
+          },
+          drawerInactiveTintColor: '#fff',
         }} />
     </Drawer>);
 }

@@ -1,10 +1,11 @@
-import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 function Index(){
   return (
     <View style={styles.container}>
-      <Text>Index</Text>
+      <StatusBar style="light" />
+      <Text style={styles.text}>Select a tool to get started</Text>
     </View>
   );
 };
@@ -12,12 +13,11 @@ function Index(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#676767',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text:{
-    color: "#fafafa",
+    color: "#000000",
     fontSize: 20,
   },
 });
