@@ -1,25 +1,23 @@
-import { Stack } from "expo-router";
+import { Drawer } from 'expo-router/drawer';
 import React from "react";
 
-export default function IndexLayout() {
+export default function Layout() {
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: "#545454",
-        },
-        headerTintColor: "white",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
-      }}
-    >
-      <Stack.Screen
-        name="index"
+    <Drawer>
+      <Drawer.Screen name="index" 
         options={{
-          title: "Index",
-        }}
-      />
-    </Stack>
-  );
+          title: "All Them Tools",
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }} />
+      <Drawer.Screen name="tool/notes/index" 
+        options={{
+          title: "Notes",
+        }} />
+    </Drawer>);
 }

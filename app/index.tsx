@@ -1,25 +1,25 @@
-import { Redirect } from "expo-router";
 import * as React from 'react';
-import { Drawer } from 'react-native-paper';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Index = () => {
-  const [active, setActive] = React.useState('');
-
-  //return <Redirect href="" />;
+function Index(){
   return (
-    <Drawer.Section title="Some title">
-      <Drawer.Item
-        label="First Item"
-        active={active === 'first'}
-        onPress={() => setActive('first')}
-      />
-      <Drawer.Item
-        label="Second Item"
-        active={active === 'second'}
-        onPress={() => setActive('second')}
-      />
-    </Drawer.Section>
+    <View style={styles.container}>
+      <Text>Index</Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#676767',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text:{
+    color: "#fafafa",
+    fontSize: 20,
+  },
+});
 
 export default Index;
