@@ -1,88 +1,83 @@
-import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Dimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
+import { Link, Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { height, width } = Dimensions.get('window');
-
 export default function Notes() {
-    const [data, setData] = useState({
-        id: 1,
-        title: "",
-        text: "",
-    });
-    
+    const [notes, setNotes] = useState([]);
 
     useEffect(() => {
         getData();
     }, []);
-    useEffect(() => {
-        saveData();
-    }, [data]);
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("NotesArray");
+            jsonValue != null ? setNotes(JSON.parse(jsonValue)) : null;
+            console.log("Data received from storage: " + jsonValue);
+        } catch (e) {
+            console.error("Error at reading from storage: \n" + e);
+        }
+    };
 
     const saveData = async () => {
         try {
-            const dataString = JSON.stringify(data);
-            await AsyncStorage.setItem(JSON.stringify(data.id), dataString);
+            const dataString = JSON.stringify(notes);
+            await AsyncStorage.setItem("NotesArray", dataString);
             console.log("Data saved: " + dataString);
         } catch (e) {
             console.error("Error at writing to storage: \n" + e);
         }
     }
 
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem(JSON.stringify(data.id));
-            jsonValue != null ? setData(JSON.parse(jsonValue)) : null;
-            console.log("Data received");
-        } catch (e) {
-            console.error("Error at reading from storage: \n" + e);
-        }
-    };
+    const renderItem = ({ item }: { item: any }) => (
+        <Link href={`/tool/notes/${item.id}`} asChild>
+            <Pressable style={styles.itemContainer}>
+                <View style={styles.textContainer}>
+                    <Text style={styles.nameText}>{item.title ? item.title : "Unnamed Note"}</Text>
+                    <Text style={styles.previewText}>{item.text}</Text>
+                </View>
+            </Pressable>
+        </Link>
+    );
 
     return (
         <View>
-            <TextInput
-                mode='outlined'
-                value={data.title}
-                onChangeText={title => setData({ ...data, title })}
-                placeholder='New Note'
-                style={styles.titlefield}
-                outlineStyle={{ borderColor: '#ffffff' }}
+            <Stack.Screen options={{ title: "Your Notes" }} />
+            <FlatList
+                data={notes}
+                keyExtractor={({ id }) => id}
+                renderItem={renderItem}
             />
-            <ScrollView
-                keyboardDismissMode='on-drag'
-            >
-                <TextInput
-                    mode='outlined'
-                    value={data.text}
-                    onChangeText={text => setData({ ...data, text })}
-                    multiline={true}
-                    dense={true}
-                    style={styles.inputfield}
-                    outlineStyle={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#000000' }}
-
-                />
-            </ScrollView>
+            <Button
+                title="Add Note"
+                onPress={() => {
+                    setNotes([...notes, { id: notes.length, title: "", text: "" }]);
+                    saveData();
+                }}
+            />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    text: {
-        color: "#000000",
-        fontSize: 20,
+    itemContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: "#000000",
     },
-    titlefield: {
-        margin: 5,
-        backgroundColor: '#ffffff',
-        fontSize: 20,
-        fontWeight: 'bold',
+    textContainer: {
+        marginLeft: 16,
     },
-    inputfield: {
-        flexGrow: 1,
-        height: height*0.35,
-        margin: 10,
+    nameText: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    previewText: {
+        fontSize: 12,
+        maxHeight: 20,
     },
 });

@@ -3,7 +3,12 @@ import React from "react";
 
 export default function Layout() {
   return (
-    <Drawer>
+    <Drawer
+    screenOptions={({route}) => {
+      return {
+        headerShown: route.name !== "Notes",
+      }}}
+    >
       <Drawer.Screen name="index" 
         options={{
           title: "Home",
@@ -19,7 +24,7 @@ export default function Layout() {
           },
           drawerInactiveTintColor: '#fff',
         }} />
-      <Drawer.Screen name="tool/notes/index" 
+      <Drawer.Screen name="tool/notes" 
         options={{
           title: "Notes",
           headerStyle: {
