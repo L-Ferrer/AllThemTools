@@ -43,6 +43,7 @@ export default function App() {
         console.log('Playing Sound');
         await sound.playAsync();
         setIsPlaying(true);
+        setIsPaused(false);
     }
 
     async function pauseSound() {
@@ -57,22 +58,11 @@ export default function App() {
             console.log('Resuming Sound');
             await sound?.playAsync();
             setIsPlaying(true);
+            setIsPaused(false);
         } else {
             playSound();
         }
     }
-
-    useEffect(() => {
-        return sound
-            ? () => {
-                console.log('Unloading Sound');
-                setIsPlaying(false);
-                setIsPaused(false);
-                setFile({ uri: "", name: "", mimeType: "" });
-                sound.unloadAsync();
-            }
-            : undefined;
-    }, [sound]);
 
     return (
         <View style={styles.container}>
