@@ -8,12 +8,14 @@ export default function Notes() {
     const [notes, setNotes] = useState([]);
     const isFocused = useIsFocused();
 
+    // Reads storage on focus (when returning to screen)
     useEffect(() => {
         getData();
     }, [isFocused]);
 
     const getData = async () => {
         try {
+            // Set notes to data from storage if it exists
             const jsonValue = await AsyncStorage.getItem("NotesArray");
             jsonValue != null ? setNotes(JSON.parse(jsonValue)) : null;
             console.log("Data received from storage: " + jsonValue);
@@ -24,6 +26,7 @@ export default function Notes() {
 
     const saveData = async () => {
         try {
+            // Save notes to storage
             const dataString = JSON.stringify(notes);
             await AsyncStorage.setItem("NotesArray", dataString);
             console.log("Data saved: " + dataString);
@@ -32,6 +35,7 @@ export default function Notes() {
         }
     }
 
+    // Render each note as a link to the note
     const renderItem = ({ item }: { item: any }) => (
         <Link href={`/tool/notes/${item.id}`} asChild>
             <Pressable style={styles.itemContainer}>
@@ -55,6 +59,7 @@ export default function Notes() {
             <Button
                 title="Add Note"
                 onPress={() => {
+                    // Add new note to notes array
                     setNotes([...notes, { id: notes.length, title: "", text: "" }]);
                     saveData();
                 }}

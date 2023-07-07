@@ -19,6 +19,7 @@ export default function Note() {
     }, []);
 
     useEffect(() => {
+        // Update title and text when readData has been received
         if (readData[id[0]]) {
             setTitle(readData[id[0]].title);
             setText(readData[id[0]].text);
@@ -28,20 +29,23 @@ export default function Note() {
         }
     }, [readData]);
 
+    // Save data to storage
     const saveData = async () => {
         try {
-            const buffer = readData;
-            buffer[id[0]] = { id: id, title: title, text: text };
-            const dataString = JSON.stringify(buffer);
-            await AsyncStorage.setItem("NotesArray", dataString);
+            const buffer = readData; // Copy readData to buffer
+            buffer[id[0]] = { id: id, title: title, text: text }; // Update buffer with new data
+            const dataString = JSON.stringify(buffer); // Convert buffer (JSON Object) to string
+            await AsyncStorage.setItem("NotesArray", dataString); // Save string to storage
             console.log("Data saved: " + dataString);
         } catch (e) {
             console.error("Error at writing to storage: \n" + e);
         }
     }
 
+    // Get data from storage
     const getData = async () => {
         try {
+            // Read data from storage if it exists
             await AsyncStorage.getItem("NotesArray").then((value) => {
                 if (value != null) {
                     setReadData(JSON.parse(value));
@@ -58,7 +62,7 @@ export default function Note() {
         <View>
             <Stack.Screen
                 options={{
-                    title: title ? title : "Unnamed Note",
+                    title: title ? title : "Unnamed Note", // If title is empty, display "Unnamed Note"
                 }}
             />
             <TextInput
@@ -74,7 +78,7 @@ export default function Note() {
             >
                 <TextInput
                     mode='outlined'
-                    value={text ? text : ""}
+                    value={text ? text : ""} // If text is empty, display nothing
                     onChangeText={text => setText(text)}
                     multiline={true}
                     dense={true}
@@ -85,6 +89,7 @@ export default function Note() {
             <Button
                 title="Save"
                 onPress={() => {
+                    // Saves data to storage and updates writeData
                     setWriteData([...writeData, { id: readData.length, title: title, text: text }]);
                     saveData();
                 }}
