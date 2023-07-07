@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
 import { Magnetometer } from 'expo-sensors';
+import LPF from 'lpf';
 
 const { height, width } = Dimensions.get('window');
+LPF.smoothing = 0.3; // Smoothing factor. Should be between 0 and 1. The smaller the more smoothing.
 
 export default function Compass() {
     useEffect(() => {
@@ -19,10 +21,10 @@ export default function Compass() {
     const _subscribe = () => {
         setSubscription(
             Magnetometer.addListener(result => {
-                setData(result);
+                setData(result); // Read the magnetometer values from the sensor
             })
         );
-        Magnetometer.setUpdateInterval(50);
+        Magnetometer.setUpdateInterval(50); // Set the speed of data retrieval
     };
 
     const _unsubscribe = () => {
@@ -30,10 +32,10 @@ export default function Compass() {
         setSubscription(null);
     };
 
-    const bearing = Math.round((Math.atan2(data.y, data.x) * 180 / Math.PI)-90);
-    const degree = bearing < 0 ? bearing + 360 : bearing;
+    const bearing = Math.round((Math.atan2(data.y, data.x) * 180 / Math.PI)-90); // Calculate the bearing from the x and y values
+    const degree = bearing < 0 ? bearing + 360 : bearing; // If the bearing is negative, add 360 to get the degrees from 0 to 360
     
-    const _direction = (degree) => {
+    const _direction = (degree) => { // Convert degrees to direction
         if (degree >= 22.5 && degree < 67.5) {
             return 'NE';
         }
@@ -82,7 +84,7 @@ export default function Compass() {
             <Image source={require("../../../assets/compass/compass.png")} style={{
                 height: width - 80,
                 resizeMode: 'contain',
-                transform: [{ rotate: 360 - bearing + 'deg' }]
+                transform: [{ rotate: 360 - LPF.next(bearing) + 'deg' }] // Rotate the compass image based on the bearing value
             }} />
             <Text>
                 {}
