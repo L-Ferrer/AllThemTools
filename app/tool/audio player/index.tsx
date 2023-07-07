@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Dimensions } from 'react-native';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { useIsFocused } from '@react-navigation/native';
 import { Foundation } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 
