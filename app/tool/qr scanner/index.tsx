@@ -7,7 +7,6 @@ export default function QRScanner() {
     
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const [qrData, setQrData] = useState("");
 
     useEffect(() => {
         const getBarCodeScannerPermissions = async () => {
@@ -19,10 +18,9 @@ export default function QRScanner() {
     }, []);
 
     const qr_data = ({ data }) => {
-        setQrData(data);
         setScanned(true);
         Vibration.vibrate(100);
-        alert(qrData);
+        alert(data);
     };
 
     if (hasPermission === false) {
