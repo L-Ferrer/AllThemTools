@@ -6,6 +6,7 @@
     },
     "name": "AllThemTools",
     "slug": "AllThemTools",
+    "icon": "./assets/icon.png",
     "plugins": [
       [
         "expo-document-picker",
