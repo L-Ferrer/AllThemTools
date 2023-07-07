@@ -69,5 +69,20 @@ export default function Layout() {
           },
           drawerInactiveTintColor: '#fff',
         }} />
+        <Drawer.Screen name="tool/qr scanner/index" 
+        options={{
+          title: "QR Scanner",
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          drawerStyle: {
+            backgroundColor: '#000',
+          },
+          drawerInactiveTintColor: '#fff',
+        }} />
     </Drawer>);
 }
