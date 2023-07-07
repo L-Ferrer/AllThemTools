@@ -2,13 +2,15 @@ import { Link, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Notes() {
     const [notes, setNotes] = useState([]);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         getData();
-    }, []);
+    }, [isFocused]);
 
     const getData = async () => {
         try {
@@ -48,6 +50,7 @@ export default function Notes() {
                 data={notes}
                 keyExtractor={({ id }) => id}
                 renderItem={renderItem}
+                style={{ marginBottom: 20 }}
             />
             <Button
                 title="Add Note"

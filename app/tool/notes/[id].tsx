@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSearchParams, Stack } from 'expo-router';
-import { set } from 'react-native-reanimated';
 
 const { height, width } = Dimensions.get('window');
 
 export default function Note() {
     const { id } = useSearchParams();
-    const [data, setData] = useState([]);
+    const [readData, setReadData] = useState([]);
+    const [writeData, setWriteData] = useState([]);
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
@@ -19,18 +19,20 @@ export default function Note() {
     }, []);
 
     useEffect(() => {
-        if (id) {
-            saveData();
+        if (readData[id[0]]) {
+            setTitle(readData[id[0]].title);
+            setText(readData[id[0]].text);
+        } else {
+            setTitle("");
+            setText("");
         }
-    }, [data]);
-
-    useEffect(() => {
-        setData([...data[id[0]], { title: title, text: text }]);
-    }, [title, text]);
+    }, [readData]);
 
     const saveData = async () => {
         try {
-            const dataString = JSON.stringify(data);
+            const buffer = readData;
+            buffer[id[0]] = { id: id, title: title, text: text };
+            const dataString = JSON.stringify(buffer);
             await AsyncStorage.setItem("NotesArray", dataString);
             console.log("Data saved: " + dataString);
         } catch (e) {
@@ -40,9 +42,13 @@ export default function Note() {
 
     const getData = async () => {
         try {
-            const jsonValue = await AsyncStorage.getItem("NotesArray");
-            jsonValue != null ? setData(JSON.parse(jsonValue)) : null;
-            console.log("Data received from storage: " + jsonValue);
+            await AsyncStorage.getItem("NotesArray").then((value) => {
+                if (value != null) {
+                    setReadData(JSON.parse(value));
+                    console.log("Data received from storage: " + value);
+                }
+            });
+
         } catch (e) {
             console.error("Error at reading from storage: \n" + e);
         }
@@ -74,9 +80,15 @@ export default function Note() {
                     dense={true}
                     style={styles.inputfield}
                     outlineStyle={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#000000' }}
-
                 />
             </ScrollView>
+            <Button
+                title="Save"
+                onPress={() => {
+                    setWriteData([...writeData, { id: readData.length, title: title, text: text }]);
+                    saveData();
+                }}
+            />
         </View>
     );
 }
