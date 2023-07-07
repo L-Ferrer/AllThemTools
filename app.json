@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "AllThemTools",
-    "slug": "AllThemTools"
+    "slug": "AllThemTools",
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
+    ]
   }
 }

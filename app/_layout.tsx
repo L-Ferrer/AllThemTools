@@ -54,5 +54,20 @@ export default function Layout() {
           },
           drawerInactiveTintColor: '#fff',
         }} />
+        <Drawer.Screen name="tool/audio player/index" 
+        options={{
+          title: "Audio Player",
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          drawerStyle: {
+            backgroundColor: '#000',
+          },
+          drawerInactiveTintColor: '#fff',
+        }} />
     </Drawer>);
 }
