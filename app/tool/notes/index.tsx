@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import {notificationAsync, NotificationFeedbackType} from 'expo-haptics';
 
 export default function Notes() {
     const [notes, setNotes] = useState([]);
@@ -62,6 +63,7 @@ export default function Notes() {
                     // Add new note to notes array
                     setNotes([...notes, { id: notes.length, title: "", text: "" }]);
                     saveData();
+                    notificationAsync(NotificationFeedbackType.Success);
                 }}
             />
         </View>

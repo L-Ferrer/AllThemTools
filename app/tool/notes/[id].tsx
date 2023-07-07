@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSearchParams, Stack } from 'expo-router';
+import {NotificationFeedbackType, notificationAsync} from 'expo-haptics';
 
 const { height, width } = Dimensions.get('window');
 
@@ -92,6 +93,7 @@ export default function Note() {
                     // Saves data to storage and updates writeData
                     setWriteData([...writeData, { id: readData.length, title: title, text: text }]);
                     saveData();
+                    notificationAsync(NotificationFeedbackType.Success);
                 }}
             />
         </View>
